@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我们的家 | 宋&华宇的小窝</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">🏠 我们的家</a>
+      <button class="nav-toggle" id="navToggle" aria-label="菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home" class="nav-link active">首页</a></li>
+        <li><a href="#gallery" class="nav-link">相册</a></li>
+        <li><a href="#diary" class="nav-link">日记</a></li>
+        <li><a href="#memo" class="nav-link">备忘录</a></li>
+        <li><a href="#menu" class="nav-link">菜单</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 首页英雄区 -->
+  <section id="home" class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">欢迎来到 <span class="accent">我们的家</span></h1>
+      <p class="hero-subtitle">这里是宋世伟 & 华宇的小天地<br>记录每一天的小确幸 ✨</p>
+      <div class="hero-date" id="heroDate"></div>
+      <a href="#gallery" class="hero-btn">查看相册 →</a>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- 相册 -->
+  <section id="gallery" class="section">
+    <div class="container">
+      <h2 class="section-title">📸 家庭相册</h2>
+      <p class="section-desc">每一次快门，都是时光的礼物</p>
+
+      <div class="gallery-filters">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="daily">日常</button>
+        <button class="filter-btn" data-filter="travel">旅行</button>
+        <button class="filter-btn" data-filter="food">美食</button>
+        <button class="filter-btn" data-filter="pet">萌宠</button>
+      </div>
+
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- 动态生成的照片卡片 -->
+      </div>
+
+      <div class="gallery-upload-area" id="uploadArea">
+        <div class="upload-prompt">
+          <span class="upload-icon">📷</span>
+          <p>点击或拖放照片到这里上传</p>
+          <small>支持的格式：JPG、PNG、GIF（建议不超过 5MB）</small>
+        </div>
+        <input type="file" id="fileInput" multiple accept="image/*" hidden>
+      </div>
+    </div>
+  </section>
+
+  <!-- 日记 -->
+  <section id="diary" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">📝 家庭日记</h2>
+      <p class="section-desc">把平凡的日子写成诗</p>
+
+      <div class="diary-form-card">
+        <div class="form-group">
+          <label class="form-label">日记标题</label>
+          <input type="text" class="form-input" id="diaryTitle" placeholder="今天发生了什么有趣的事？">
+        </div>
+        <div class="form-group">
+          <label class="form-label">心情选择</label>
+          <div class="mood-picker">
+            <button class="mood-btn" data-mood="happy" title="开心">😊</button>
+            <button class="mood-btn" data-mood="love" title="甜蜜">🥰</button>
+            <button class="mood-btn" data-mood="calm" title="平静">😌</button>
+            <button class="mood-btn" data-mood="excited" title="兴奋">🤩</button>
+            <button class="mood-btn" data-mood="grateful" title="感恩">🙏</button>
+            <button class="mood-btn" data-mood="tired" title="累了">😮‍💨</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">日记内容</label>
+          <textarea class="form-textarea" id="diaryContent" rows="5" placeholder="写下今天的故事..."></textarea>
+        </div>
+        <button class="btn-primary" id="saveDiary">保存日记</button>
+      </div>
+
+      <div class="diary-list" id="diaryList">
+        <!-- 动态生成的日记卡片 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 备忘录 -->
+  <section id="memo" class="section">
+    <div class="container">
+      <h2 class="section-title">📋 备忘录</h2>
+      <p class="section-desc">生活小细节，一件都不错</p>
+
+      <div class="memo-add-area">
+        <input type="text" class="form-input memo-input" id="memoInput" placeholder="添加新备忘录...">
+        <select class="form-select" id="memoCategory">
+          <option value="general">📌 一般</option>
+          <option value="shopping">🛒 购物</option>
+          <option value="todo">✅ 待办</option>
+          <option value="reminder">⏰ 提醒</option>
+          <option value="bill">💰 账单</option>
+        </select>
+        <button class="btn-primary" id="addMemo">添加</button>
+      </div>
+
+      <div class="memo-list" id="memoList">
+        <!-- 动态生成的备忘录 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 家庭菜单 -->
+  <section id="menu" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">🍳 家庭菜单</h2>
+      <p class="section-desc">今天吃什么？看这里</p>
+
+      <div class="menu-tabs">
+        <button class="menu-tab active" data-week="this">本周菜单</button>
+        <button class="menu-tab" data-week="next">下周菜单</button>
+      </div>
+
+      <div class="menu-add-area">
+        <input type="text" class="form-input" id="mealName" placeholder="菜名">
+        <select class="form-select" id="mealType">
+          <option value="breakfast">☀️ 早餐</option>
+          <option value="lunch">🌤️ 午餐</option>
+          <option value="dinner">🌙 晚餐</option>
+          <option value="snack">🍰 加餐</option>
+        </select>
+        <input type="text" class="form-input" id="mealDay" placeholder="星期几（可选）">
+        <button class="btn-primary" id="addMeal">添加</button>
+      </div>
+
+      <div class="menu-grid" id="menuGrid">
+        <!-- 动态生成的菜单 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p class="footer-text">用 ❤️ 打造我们的小家</p>
+      <p class="footer-copy">© 2026 宋世伟 & 华宇 | 每一天都值得被记录</p>
+    </div>
+  </footer>
+
+  <!-- 照片预览模态框 -->
+  <div class="modal" id="photoModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content modal-photo">
+      <button class="modal-close" id="modalClose">✕</button>
+      <img src="" alt="" id="modalImage" class="modal-img">
+      <div class="modal-caption" id="modalCaption"></div>
+      <button class="modal-nav modal-prev" id="modalPrev">‹</button>
+      <button class="modal-nav modal-next" id="modalNext">›</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
