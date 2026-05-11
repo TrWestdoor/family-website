@@ -1,182 +1,212 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我们的家 | 宋&华宇的小窝</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宋华家的小窝</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- 导航栏 -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <a href="#" class="nav-logo">🏠 我们的家</a>
-      <button class="nav-toggle" id="navToggle" aria-label="菜单">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-menu" id="navMenu">
-        <li><a href="#home" class="nav-link active">首页</a></li>
-        <li><a href="#gallery" class="nav-link">相册</a></li>
-        <li><a href="#diary" class="nav-link">日记</a></li>
-        <li><a href="#memo" class="nav-link">备忘录</a></li>
-        <li><a href="#menu" class="nav-link">菜单</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- 首页英雄区 -->
-  <section id="home" class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h1 class="hero-title">欢迎来到 <span class="accent">我们的家</span></h1>
-      <p class="hero-subtitle">这里是宋世伟 & 华宇的小天地<br>记录每一天的小确幸 ✨</p>
-      <div class="hero-date" id="heroDate"></div>
-      <a href="#gallery" class="hero-btn">查看相册 →</a>
-    </div>
-    <div class="scroll-indicator">
-      <div class="scroll-arrow"></div>
-    </div>
-  </section>
-
-  <!-- 相册 -->
-  <section id="gallery" class="section">
-    <div class="container">
-      <h2 class="section-title">📸 家庭相册</h2>
-      <p class="section-desc">每一次快门，都是时光的礼物</p>
-
-      <div class="gallery-filters">
-        <button class="filter-btn active" data-filter="all">全部</button>
-        <button class="filter-btn" data-filter="daily">日常</button>
-        <button class="filter-btn" data-filter="travel">旅行</button>
-        <button class="filter-btn" data-filter="food">美食</button>
-        <button class="filter-btn" data-filter="pet">萌宠</button>
-      </div>
-
-      <div class="gallery-grid" id="galleryGrid">
-        <!-- 动态生成的照片卡片 -->
-      </div>
-
-      <div class="gallery-upload-area" id="uploadArea">
-        <div class="upload-prompt">
-          <span class="upload-icon">📷</span>
-          <p>点击或拖放照片到这里上传</p>
-          <small>支持的格式：JPG、PNG、GIF（建议不超过 5MB）</small>
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand"><span class="nav-icon">🏡</span><span class="nav-title">宋华家的小窝</span></div>
+        <button class="nav-toggle" id="navToggle" aria-label="菜单">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a href="#home">首页</a><a href="#family">家人</a><a href="#album">相册</a>
+            <a href="#timeline">大事记</a><a href="#shortcuts">快捷</a><a href="#messages">留言</a>
+            <a href="#memos">备忘</a><a href="#map">足迹</a>
         </div>
-        <input type="file" id="fileInput" multiple accept="image/*" hidden>
-      </div>
-    </div>
-  </section>
+    </nav>
 
-  <!-- 日记 -->
-  <section id="diary" class="section section-alt">
-    <div class="container">
-      <h2 class="section-title">📝 家庭日记</h2>
-      <p class="section-desc">把平凡的日子写成诗</p>
-
-      <div class="diary-form-card">
-        <div class="form-group">
-          <label class="form-label">日记标题</label>
-          <input type="text" class="form-input" id="diaryTitle" placeholder="今天发生了什么有趣的事？">
+    <!-- ====== 首页 ====== -->
+    <section id="home" class="section hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">欢迎来到我们的小家</h1>
+            <p class="hero-subtitle">爱 · 温暖 · 陪伴</p>
+            <p class="hero-date" id="todayDate"></p>
+            <div class="hero-greeting" id="greeting"></div>
         </div>
-        <div class="form-group">
-          <label class="form-label">心情选择</label>
-          <div class="mood-picker">
-            <button class="mood-btn" data-mood="happy" title="开心">😊</button>
-            <button class="mood-btn" data-mood="love" title="甜蜜">🥰</button>
-            <button class="mood-btn" data-mood="calm" title="平静">😌</button>
-            <button class="mood-btn" data-mood="excited" title="兴奋">🤩</button>
-            <button class="mood-btn" data-mood="grateful" title="感恩">🙏</button>
-            <button class="mood-btn" data-mood="tired" title="累了">😮‍💨</button>
-          </div>
+        <div class="scroll-hint"><span>↓ 向下滑动探索</span></div>
+    </section>
+
+    <!-- ====== 家人介绍 ====== -->
+    <section id="family" class="section family-section">
+        <h2 class="section-heading"><span class="heading-icon">👨‍👩‍👦</span> 家人介绍</h2>
+        <div class="family-grid">
+            <div class="member-card">
+                <div class="member-photo" id="fatherPhoto"></div>
+                <h3>宋世伟（爸爸）</h3>
+                <p class="member-bday">🎂 1994.12.20</p>
+                <p class="member-role">算法工程师</p>
+                <p class="member-desc">家庭的顶梁柱，温暖的技术宅。喜欢滑雪、摩托车和打游戏，但更爱陪家人的每一刻。</p>
+                <div class="member-tags"><span>🎿滑雪</span><span>🏍️摩托</span><span>🎮游戏</span><span>💻AI</span></div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo" id="motherPhoto"></div>
+                <h3>华宇（妈妈）</h3>
+                <p class="member-bday">🎂 1997.10.13</p>
+                <p class="member-role">家人的天使</p>
+                <p class="member-desc">温柔贤惠的妈妈，把家里打理得井井有条。她是家的灵魂，让每个角落都有爱。</p>
+                <div class="member-tags"><span>🍳美食</span><span>📸摄影</span><span>🎨生活家</span><span>❤️温柔</span></div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo" id="fishEggPhoto"></div>
+                <h3>鱼蛋</h3>
+                <p class="member-bday">🐱 家的小太阳</p>
+                <p class="member-role">英短蓝金渐层</p>
+                <p class="member-desc">圆滚滚的蓝金小可爱，每天在沙发上晒太阳，被窝里的常驻嘉宾。毛茸茸的治愈系担当。</p>
+                <div class="member-tags"><span>😴睡觉</span><span>🐟贪吃</span><span>💛亲人</span></div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo" id="fishPhoto"></div>
+                <h3>鱼子</h3>
+                <p class="member-bday">🐱 家的小公主</p>
+                <p class="member-role">蓝金渐层小妹妹</p>
+                <p class="member-desc">鱼蛋的妹妹，同样是一团蓝金小毛球。活泼好奇，最喜欢在新家里探索每个角落。</p>
+                <div class="member-tags"><span>🔍探索</span><span>🐛活泼</span><span>💛亲人</span></div>
+            </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">日记内容</label>
-          <textarea class="form-textarea" id="diaryContent" rows="5" placeholder="写下今天的故事..."></textarea>
+    </section>
+
+    <!-- ====== 相册 ====== -->
+    <section id="album" class="section album-section">
+        <h2 class="section-heading"><span class="heading-icon">📸</span> 家庭相册</h2>
+        <p class="section-desc">记录每一个温馨瞬间</p>
+        <div class="album-grid" id="albumGrid">
+            <div class="album-item" data-title="新家客厅" data-desc="2025年9月 - 我们的第一个家"><div class="album-placeholder living"><span>🏠</span></div></div>
+            <div class="album-item" data-title="新家卧室" data-desc="温馨舒适的卧室"><div class="album-placeholder bedroom"><span>🛏️</span></div></div>
+            <div class="album-item" data-title="新家阳台" data-desc="阳光洒满的阳台"><div class="album-placeholder balcony"><span>☀️</span></div></div>
+            <div class="album-item" data-title="鱼蛋在沙发" data-desc="小可爱在晒太阳"><div class="album-placeholder cat1"><span>😺</span></div></div>
+            <div class="album-item" data-title="鱼子在新家" data-desc="好奇心满满的小妹妹"><div class="album-placeholder cat2"><span>😸</span></div></div>
+            <div class="album-item" data-title="上海外滩" data-desc="2024年冬天 - 外滩夜景"><div class="album-placeholder shanghai"><span>🌃</span></div></div>
+            <div class="album-item" data-title="三亚海边" data-desc="2024年4月 - 亚龙湾的日落"><div class="album-placeholder sanya"><span>🌅</span></div></div>
+            <div class="album-item" data-title="马尔代夫" data-desc="2025年5月 - 蜜月旅行"><div class="album-placeholder maldives"><span>🏝️</span></div></div>
+            <div class="album-item" data-title="成都美食" data-desc="2025年春节 - 火锅配兔头"><div class="album-placeholder chengdu"><span>🍲</span></div></div>
+            <div class="album-item" data-title="杭州西湖" data-desc="秋日赏桂"><div class="album-placeholder hangzhou"><span>🍂</span></div></div>
+            <div class="album-item" data-title="张家界" data-desc="奇峰异石的壮丽"><div class="album-placeholder changsha"><span>⛰️</span></div></div>
+            <div class="album-item" data-title="西安城墙" data-desc="感受千年古城"><div class="album-placeholder xian"><span>🏯</span></div></div>
         </div>
-        <button class="btn-primary" id="saveDiary">保存日记</button>
-      </div>
+        <!-- 相册灯箱 -->
+        <div class="lightbox" id="lightbox">
+            <span class="lightbox-close" id="lightboxClose">&times;</span>
+            <div class="lightbox-content">
+                <h3 id="lightboxTitle"></h3>
+                <p id="lightboxDesc"></p>
+                <div id="lightboxImgArea" class="lightbox-img-area"></div>
+            </div>
+        </div>
+    </section>
 
-      <div class="diary-list" id="diaryList">
-        <!-- 动态生成的日记卡片 -->
-      </div>
-    </div>
-  </section>
+    <!-- ====== 大事记时间线 ====== -->
+    <section id="timeline" class="section timeline-section">
+        <h2 class="section-heading"><span class="heading-icon">📅</span> 家庭大事记</h2>
+        <div class="timeline-container">
+            <div class="timeline-item"><div class="timeline-year">2020.05</div><div class="timeline-content"><h3>❤️ 我们在一起了</h3><p>爱情从这里开始</p></div></div>
+            <div class="timeline-item right"><div class="timeline-year">2024.04</div><div class="timeline-content"><h3>🏖️ 三亚亚龙湾</h3><p>一起看海，拥抱阳光</p></div></div>
+            <div class="timeline-item"><div class="timeline-year">2024.05</div><div class="timeline-content"><h3>😺 鱼蛋来了</h3><p>家里迎来第一位毛孩子</p></div></div>
+            <div class="timeline-item right"><div class="timeline-year">2024.冬至</div><div class="timeline-content"><h3>🌃 上海外滩</h3><p>冬夜的外滩格外浪漫</p></div></div>
+            <div class="timeline-item"><div class="timeline-year">2025.01</div><div class="timeline-content"><h3>🐱 鱼子加入</h3><p>毛孩子一家变成三姐妹</p></div></div>
+            <div class="timeline-item right"><div class="timeline-year">2025.春节</div><div class="timeline-content"><h3>🍲 成都过年</h3><p>辣味十足的兔头盛宴</p></div></div>
+            <div class="timeline-item"><div class="timeline-year">2025.05.02</div><div class="timeline-content"><h3>🤵👰 我们结婚了！</h3><p>上海丽思卡尔顿·永恒誓言，从此有了"宋华"这个家的名字</p></div></div>
+            <div class="timeline-item right"><div class="timeline-year">2025.05</div><div class="timeline-content"><h3>🏝️ 蜜月马尔代夫</h3><p>碧海蓝天的梦幻之旅</p></div></div>
+            <div class="timeline-item"><div class="timeline-year">2025.07.02</div><div class="timeline-content"><h3>🏡 搬到新上海</h3><p>从松江来到新的社区，鱼蛋和鱼子也有了新窝！</p></div></div>
+            <div class="timeline-item right"><div class="timeline-year">2026.08.02</div><div class="timeline-content"><h3>🏖️ 马尔代夫二次蜜月</h3><p>都喜天阙 - 计划中的梦幻之旅</p></div></div>
+        </div>
+    </section>
 
-  <!-- 备忘录 -->
-  <section id="memo" class="section">
-    <div class="container">
-      <h2 class="section-title">📋 备忘录</h2>
-      <p class="section-desc">生活小细节，一件都不错</p>
+    <!-- ====== 快捷入口 ====== -->
+    <section id="shortcuts" class="section shortcuts-section">
+        <h2 class="section-heading"><span class="heading-icon">⚡</span> 常用信息</h2>
+        <div class="shortcuts-grid">
+            <div class="shortcut-card"><h3>📍 新家地址</h3><p class="shortcut-text">上海市</p><p class="shortcut-detail"></p><p class="shortcut-detail">从松江搬到这里，开始了新的生活！</p></div>
+            <div class="shortcut-card"><h3>📶 WiFi信息</h3><p class="shortcut-text">请询问家人</p><p class="shortcut-detail">密码由家庭成员管理</p></div>
+            <div class="shortcut-card"><h3>🚨 紧急电话</h3><p class="shortcut-text">紧急: 110 | 火警: 119</p><p class="shortcut-detail">医疗: 120 | 交通事故: 122</p></div>
+            <div class="shortcut-card"><h3>👨‍👩 家庭电话</h3><p class="shortcut-text">请查看手机通讯录</p><p class="shortcut-detail">家人联系方式</p></div>
+            <div class="shortcut-card"><h3>🔧 物业维修</h3><p class="shortcut-text">请查看手机</p><p class="shortcut-detail">物业联系方式</p></div>
+            <div class="shortcut-card"><h3>🛒 常用链接</h3><p class="shortcut-text"><a href="https://jd.com" target="_blank">京东</a> | <a href="https://ele.me" target="_blank">饿了么</a></p><p class="shortcut-detail">外卖/购物</p></div>
+        </div>
+    </section>
 
-      <div class="memo-add-area">
-        <input type="text" class="form-input memo-input" id="memoInput" placeholder="添加新备忘录...">
-        <select class="form-select" id="memoCategory">
-          <option value="general">📌 一般</option>
-          <option value="shopping">🛒 购物</option>
-          <option value="todo">✅ 待办</option>
-          <option value="reminder">⏰ 提醒</option>
-          <option value="bill">💰 账单</option>
-        </select>
-        <button class="btn-primary" id="addMemo">添加</button>
-      </div>
+    <!-- ====== 留言板 ====== -->
+    <section id="messages" class="section message-section">
+        <h2 class="section-heading"><span class="heading-icon">💌</span> 家庭留言板</h2>
+        <p class="section-desc">给家人写一句话吧~</p>
+        <div class="message-input-area">
+            <textarea id="messageInput" placeholder="写点想对家人说的话..." maxlength="200"></textarea>
+            <button id="postMessage" class="btn-primary">留下暖心一言</button>
+        </div>
+        <div class="message-wall" id="messageWall">
+            <div class="message-note"><span class="note-author">🐱 鱼蛋</span><p class="note-text">喵~今天也是幸福的一天！</p></div>
+            <div class="message-note"><span class="note-author">🐱 鱼子</span><p class="note-text">新家的地毯好舒服~</p></div>
+            <div class="message-note"><span class="note-author">❤️ 妈妈</span><p class="note-text">回家路上买点菜，晚上给你们做汤~</p></div>
+            <div class="message-note"><span class="note-author">🔧 爸爸</span><p class="note-text">新家的WiFi信号满格，速度飞快！</p></div>
+        </div>
+    </section>
 
-      <div class="memo-list" id="memoList">
-        <!-- 动态生成的备忘录 -->
-      </div>
-    </div>
-  </section>
+    <!-- ====== 备忘录 ====== -->
+    <section id="memos" class="section memo-section">
+        <h2 class="section-heading"><span class="heading-icon">📝</span> 家庭备忘录</h2>
+        <div class="memo-input-area">
+            <input type="text" id="memoInput" placeholder="添加待办事项..." maxlength="100">
+            <button id="addMemo" class="btn-primary">添加</button>
+        </div>
+        <div class="memo-list" id="memoList">
+            <div class="memo-item"><input type="checkbox" id="m1"><label for="m1">🐱 给鱼蛋和鱼子买猫罐头</label></div>
+            <div class="memo-item completed"><input type="checkbox" id="m2" checked><label for="m2">🏡 新家WiFi密码同步给父母</label></div>
+            <div class="memo-item"><input type="checkbox" id="m3"><label for="m3">📦 搬家剩下的纸箱处理</label></div>
+            <div class="memo-item"><input type="checkbox" id="m4"><label for="m4">💡 买个感应小夜灯放卧室</label></div>
+        </div>
+    </section>
 
-  <!-- 家庭菜单 -->
-  <section id="menu" class="section section-alt">
-    <div class="container">
-      <h2 class="section-title">🍳 家庭菜单</h2>
-      <p class="section-desc">今天吃什么？看这里</p>
+    <!-- ====== 旅行足迹地图 ====== -->
+    <section id="map" class="section map-section">
+        <h2 class="section-heading"><span class="heading-icon">🗺️</span> 旅行足迹</h2>
+        <p class="section-desc">每一步都是故事</p>
+        <div class="map-container">
+            <svg id="chinaMapSvg" viewBox="0 0 700 550" xmlns="http://www.w3.org/2000/svg">
+                <!-- 中国地图轮廓简化 -->
+                <path d="M 150,80 L 200,60 L 280,55 L 350,50 L 420,60 L 500,70 L 560,90 L 600,120 L 620,160 L 630,200 L 610,240 L 590,280 L 570,320 L 550,360 L 530,380 L 500,400 L 470,420 L 440,440 L 400,460 L 360,480 L 320,490 L 280,500 L 240,510 L 210,500 L 180,480 L 150,460 L 130,420 L 110,380 L 100,340 L 105,300 L 110,260 L 120,220 L 130,180 L 140,140 L 145,110 Z" fill="#e8ddd0" stroke="#c4b39a" stroke-width="2" class="map-outline"/>
+                <path d="M 580,100 L 620,80 L 660,90 L 680,120 L 670,150 L 640,160 L 610,140 Z" fill="#e8ddd0" stroke="#c4b39a" stroke-width="1.5" class="map-outline"/>
+                <path d="M 520,380 L 560,370 L 600,390 L 620,420 L 600,450 L 560,460 L 530,440 L 510,410 Z" fill="#e8ddd0" stroke="#c4b39a" stroke-width="1.5" class="map-outline"/>
+                <path d="M 160,420 L 180,400 L 210,420 L 220,450 L 200,480 L 160,490 L 130,460 Z" fill="#e8ddd0" stroke="#c4b39a" stroke-width="1.5" class="map-outline"/>
+                <path d="M 480,100 L 520,80 L 540,120 L 500,150 L 440,120 L 430,100 Z" fill="#e8ddd0" stroke="#c4b39a" stroke-width="1.5" class="map-outline"/>
+                <!-- 城市点位将由JS动态生成 -->
+                <g id="cityPoints"></g>
+                <g id="cityLabels"></g>
+            </svg>
+            <!-- 地图图例 -->
+            <div class="map-legend">
+                <div class="legend-item"><span class="legend-dot legend-glow"></span> 我们到访过</div>
+                <div class="legend-item"><span class="legend-dot legend-gray"></span> 未到访</div>
+            </div>
+        </div>
+        <!-- 城市信息弹窗 -->
+        <div class="city-popup" id="cityPopup">
+            <div class="popup-content" id="popupContent">
+                <button class="popup-close" id="popupClose">&times;</button>
+                <h3 id="popupCityName"></h3>
+                <div id="popupBody"></div>
+            </div>
+        </div>
+        
+        <!-- 城市列表 -->
+        <div class="city-list">
+            <h3>📍 我们到过的地方</h3>
+            <div class="city-tags" id="cityTags"></div>
+            <h3>🌟 想去的地方</h3>
+            <div class="city-tags" id="wishTags"></div>
+        </div>
+    </section>
 
-      <div class="menu-tabs">
-        <button class="menu-tab active" data-week="this">本周菜单</button>
-        <button class="menu-tab" data-week="next">下周菜单</button>
-      </div>
+    <!-- ====== 页脚 ====== -->
+    <footer class="family-footer">
+        <div class="footer-content">
+            <p>宋华家的小窝 · 用爱搭建</p>
+            <p class="footer-heart">❤️</p>
+            <p>每一刻都值得珍惜</p>
+        </div>
+    </footer>
 
-      <div class="menu-add-area">
-        <input type="text" class="form-input" id="mealName" placeholder="菜名">
-        <select class="form-select" id="mealType">
-          <option value="breakfast">☀️ 早餐</option>
-          <option value="lunch">🌤️ 午餐</option>
-          <option value="dinner">🌙 晚餐</option>
-          <option value="snack">🍰 加餐</option>
-        </select>
-        <input type="text" class="form-input" id="mealDay" placeholder="星期几（可选）">
-        <button class="btn-primary" id="addMeal">添加</button>
-      </div>
-
-      <div class="menu-grid" id="menuGrid">
-        <!-- 动态生成的菜单 -->
-      </div>
-    </div>
-  </section>
-
-  <!-- 页脚 -->
-  <footer class="footer">
-    <div class="footer-content">
-      <p class="footer-text">用 ❤️ 打造我们的小家</p>
-      <p class="footer-copy">© 2026 宋世伟 & 华宇 | 每一天都值得被记录</p>
-    </div>
-  </footer>
-
-  <!-- 照片预览模态框 -->
-  <div class="modal" id="photoModal">
-    <div class="modal-overlay"></div>
-    <div class="modal-content modal-photo">
-      <button class="modal-close" id="modalClose">✕</button>
-      <img src="" alt="" id="modalImage" class="modal-img">
-      <div class="modal-caption" id="modalCaption"></div>
-      <button class="modal-nav modal-prev" id="modalPrev">‹</button>
-      <button class="modal-nav modal-next" id="modalNext">›</button>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
