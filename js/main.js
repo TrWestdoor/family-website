@@ -208,12 +208,12 @@ function initMap() {
         const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
         circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
         circle.setAttribute('r', c.type === 'visited' ? 7 : 4);
-        circle.setAttribute('fill', c.type === 'visited' ? '#d4956a' : '#c0b0a0');
-        circle.setAttribute('stroke', c.type === 'visited' ? '#b87848' : '#a09080');
+        circle.setAttribute('fill', c.type === 'visited' ? '#e8a87c' : '#444');
+        circle.setAttribute('stroke', c.type === 'visited' ? '#c49060' : '#555');
         circle.setAttribute('stroke-width', '2');
         circle.style.cursor = 'pointer';
         if (c.type === 'visited') {
-            circle.style.filter = 'drop-shadow(0 0 6px rgba(212,149,106,0.6))';
+            circle.style.filter = 'drop-shadow(0 0 6px rgba(232,168,124,0.6))';
             circle.style.animation = 'dotGlow 2s infinite alternate';
         }
         pointsG.appendChild(circle);
@@ -222,7 +222,7 @@ function initMap() {
         text.setAttribute('x', cx + 10); text.setAttribute('y', cy + 4);
         text.setAttribute('font-size', c.type === 'visited' ? '11' : '9');
         text.setAttribute('font-weight', c.type === 'visited' ? '600' : '400');
-        text.setAttribute('fill', c.type === 'visited' ? '#d4956a' : '#a09080');
+        text.setAttribute('fill', c.type === 'visited' ? '#e8a87c' : '#555');
         text.textContent = c.name;
         labelsG.appendChild(text);
         // 点击事件
@@ -232,7 +232,7 @@ function initMap() {
 
     // CSS动画
     const style = document.createElement('style');
-    style.textContent = `@keyframes dotGlow{from{filter:drop-shadow(0 0 4px rgba(212,149,106,0.4));}to{filter:drop-shadow(0 0 10px rgba(212,149,106,0.8));}}`;
+    style.textContent = `@keyframes dotGlow{from{filter:drop-shadow(0 0 4px rgba(232,168,124,0.3));}to{filter:drop-shadow(0 0 10px rgba(232,168,124,0.8));}}`;
     document.head.appendChild(style);
 
     // 城市标签列表
