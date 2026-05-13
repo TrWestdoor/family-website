@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>装修进度 · 宋华家的小窝</title>
+    <style>
+        /* ====== 变量 — 与主站黑色主题一致 ====== */
+        :root {
+            --c-bg: #0a0a0a;
+            --c-bg-alt: #111;
+            --c-card: #161616;
+            --c-border: rgba(255,255,255,0.06);
+            --c-text: #e8e4e0;
+            --c-text-dim: #8a8580;
+            --c-primary: #e8a87c;
+            --c-primary-dim: rgba(232,168,124,0.12);
+            --c-green: #6ab07a;
+            --c-green-dim: rgba(106,176,122,0.15);
+            --c-red: #d46a6a;
+            --c-red-dim: rgba(212,106,106,0.12);
+            --c-yellow: #d4b05a;
+            --c-yellow-dim: rgba(212,176,90,0.12);
+            --c-blue: #5aa0c4;
+            --c-blue-dim: rgba(90,160,196,0.12);
+            --shadow: 0 2px 12px rgba(0,0,0,0.35);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --font: "PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+            --transition: .3s cubic-bezier(.4,0,.2,1);
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;font-size:16px}
+        body{font-family:var(--font);background:var(--c-bg);color:var(--c-text);line-height:1.7;min-height:100vh}
+        ::selection{background:rgba(232,168,124,.3);color:#fff}
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:var(--c-bg)}
+        ::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+
+        /* ====== 顶部导航 ====== */
+        .top-bar{
+            position:sticky;top:0;z-index:100;
+            display:flex;align-items:center;justify-content:space-between;
+            padding:12px 24px;
+            background:rgba(10,10,10,.88);backdrop-filter:blur(16px);
+            border-bottom:1px solid var(--c-border);
+        }
+        .top-bar a{color:var(--c-text-dim);text-decoration:none;font-size:.88rem;transition:color var(--transition)}
+        .top-bar a:hover{color:var(--c-primary)}
+        .top-bar .title{font-size:1.05rem;font-weight:600;color:var(--c-primary)}
+        .top-bar .back{display:flex;align-items:center;gap:6px}
+
+        /* ====== 主容器 ====== */
+        .container{max-width:960px;margin:0 auto;padding:24px 20px 60px}
+
+        /* ====== 头部概览卡 ====== */
+        .overview{
+            background:var(--c-card);border:1px solid var(--c-border);border-radius:var(--radius);
+            padding:28px 28px 24px;margin-bottom:24px;box-shadow:var(--shadow);
+        }
+        .overview-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+        .overview-header h1{font-size:1.5rem;color:#fff;display:flex;align-items:center;gap:10px}
+        .overview-header .emoji{font-size:1.6rem}
+        .overview-stats{display:flex;gap:20px;flex-wrap:wrap}
+        .stat-pill{
+            display:flex;align-items:center;gap:6px;
+            padding:6px 14px;border-radius:20px;font-size:.82rem;font-weight:500;
+        }
+        .stat-pill.green{background:var(--c-green-dim);color:var(--c-green)}
+        .stat-pill.yellow{background:var(--c-yellow-dim);color:var(--c-yellow)}
+        .stat-pill.red{background:var(--c-red-dim);color:var(--c-red)}
+
+        /* 总进度条 */
+        .progress-wrap{margin-bottom:8px}
+        .progress-label{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:8px}
+        .progress-label .pct{color:var(--c-primary);font-weight:700;font-size:1.1rem}
+        .progress-bar{
+            width:100%;height:14px;background:rgba(255,255,255,.06);border-radius:7px;overflow:hidden;
+        }
+        .progress-fill{
+            height:100%;border-radius:7px;
+            background:linear-gradient(90deg,var(--c-primary),#d4946a);
+            transition:width .6s cubic-bezier(.4,0,.2,1);width:0%;
+        }
+        .progress-hint{font-size:.78rem;color:var(--c-text-dim);margin-top:6px;text-align:right}
+
+        /* ====== 预算统计栏 ====== */
+        .budget-bar{
+            display:grid;grid-template-columns:1fr 1fr;gap:16px;
+            margin-bottom:24px;
+        }
+        .budget-card{
+            background:var(--c-card);border:1px solid var(--c-border);border-radius:var(--radius);
+            padding:20px 22px;box-shadow:var(--shadow);
+        }
+        .budget-card .label{font-size:.82rem;color:var(--c-text-dim);margin-bottom:4px}
+        .budget-card .amount{font-size:1.6rem;font-weight:700}
+        .budget-card .amount.blue{color:var(--c-blue)}
+        .budget-card .amount.primary{color:var(--c-primary)}
+        .budget-card .sub{font-size:.78rem;color:var(--c-text-dim);margin-top:4px}
+
+        /* ====== 阶段列表 ====== */
+        .phases-header{
+            display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;
+        }
+        .phases-header h2{font-size:1.15rem;color:#fff;display:flex;align-items:center;gap:8px}
+        .btn-reset{
+            background:var(--c-red-dim);color:var(--c-red);border:none;
+            padding:6px 14px;border-radius:20px;font-size:.8rem;cursor:pointer;
+            font-family:var(--font);transition:all var(--transition);
+        }
+        .btn-reset:hover{background:rgba(212,106,106,.25)}
+
+        .phase-card{
+            background:var(--c-card);border:1px solid var(--c-border);border-radius:var(--radius);
+            margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow);
+            transition:border-color var(--transition);
+        }
+        .phase-card:hover{border-color:rgba(255,255,255,.1)}
+        .phase-card.done{border-left:3px solid var(--c-green)}
+        .phase-card.active{border-left:3px solid var(--c-primary)}
+        .phase-card.pending{border-left:3px solid rgba(255,255,255,.08)}
+
+        .phase-header{
+            display:flex;align-items:center;gap:14px;
+            padding:16px 20px;cursor:pointer;user-select:none;
+        }
+        .phase-header:hover{background:rgba(255,255,255,.02)}
+
+        .phase-check{
+            width:24px;height:24px;border-radius:50%;border:2px solid #444;
+            display:flex;align-items:center;justify-content:center;flex-shrink:0;
+            transition:all var(--transition);cursor:pointer;font-size:.8rem;
+        }
+        .phase-check.checked{
+            background:var(--c-green);border-color:var(--c-green);color:#fff;
+        }
+        .phase-check.unchecked:hover{border-color:var(--c-primary)}
+
+        .phase-info{flex:1;min-width:0}
+        .phase-name{font-size:1rem;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px}
+        .phase-name .idx{
+            font-size:.7rem;background:rgba(255,255,255,.06);color:var(--c-text-dim);
+            padding:2px 8px;border-radius:10px;font-weight:500;
+        }
+        .phase-status-text{font-size:.82rem;color:var(--c-text-dim);margin-top:2px}
+
+        .phase-date{font-size:.78rem;color:var(--c-text-dim);text-align:right;flex-shrink:0}
+        .phase-date .due{color:var(--c-yellow)}
+        .phase-date .done-date{color:var(--c-green)}
+
+        .phase-expand{
+            background:none;border:none;color:var(--c-text-dim);font-size:1rem;
+            cursor:pointer;padding:4px;transition:transform var(--transition);
+        }
+        .phase-expand.open{transform:rotate(180deg)}
+
+        /* 展开详情 */
+        .phase-body{
+            display:none;padding:0 20px 18px;border-top:1px solid var(--c-border);
+        }
+        .phase-body.open{display:block}
+
+        .detail-grid{
+            display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;
+        }
+        .detail-field label{
+            display:block;font-size:.78rem;color:var(--c-text-dim);margin-bottom:4px;
+        }
+        .detail-field input,.detail-field textarea,.detail-field select{
+            width:100%;padding:8px 12px;background:rgba(255,255,255,.04);
+            border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);
+            color:var(--c-text);font-family:var(--font);font-size:.88rem;
+            outline:none;transition:border-color var(--transition);
+        }
+        .detail-field input:focus,.detail-field textarea:focus,.detail-field select:focus{
+            border-color:var(--c-primary);
+        }
+        .detail-field textarea{resize:vertical;min-height:60px}
+        .detail-field select option{background:#222;color:var(--c-text)}
+        .detail-field.full{grid-column:1/-1}
+
+        /* 状态标签 */
+        .status-select{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+        .status-btn{
+            padding:5px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.1);
+            background:transparent;color:var(--c-text-dim);font-size:.8rem;
+            cursor:pointer;font-family:var(--font);transition:all var(--transition);
+        }
+        .status-btn:hover{border-color:var(--c-primary);color:var(--c-primary)}
+        .status-btn.active-status{background:var(--c-primary-dim);color:var(--c-primary);border-color:var(--c-primary)}
+
+        /* 照片上传占位 */
+        .photo-upload-area{
+            margin-top:14px;padding:20px;
+            border:2px dashed rgba(255,255,255,.08);border-radius:var(--radius-sm);
+            text-align:center;color:var(--c-text-dim);font-size:.85rem;
+            transition:border-color var(--transition);cursor:pointer;
+        }
+        .photo-upload-area:hover{border-color:var(--c-primary);color:var(--c-primary)}
+        .photo-upload-area .icon{font-size:1.6rem;display:block;margin-bottom:6px}
+
+        /* ====== 底部 ====== */
+        .footer{
+            text-align:center;padding:30px 20px;color:var(--c-text-dim);font-size:.82rem;
+        }
+        .footer a{color:var(--c-primary);text-decoration:none}
+
+        /* ====== Toast ====== */
+        .toast{
+            position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+            background:var(--c-primary);color:#111;padding:10px 24px;border-radius:20px;
+            font-size:.88rem;font-weight:600;z-index:999;opacity:0;transition:all .4s ease;
+        }
+        .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+        /* ====== 响应式 ====== */
+        @media(max-width:640px){
+            .container{padding:16px 12px 40px}
+            .overview{padding:20px 16px}
+            .overview-header h1{font-size:1.2rem}
+            .budget-bar{grid-template-columns:1fr}
+            .detail-grid{grid-template-columns:1fr}
+            .phase-header{padding:14px 14px;gap:10px}
+            .phase-body{padding:0 14px 14px}
+            .overview-stats{gap:8px}
+            .stat-pill{padding:4px 10px;font-size:.75rem}
+        }
+    </style>
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<div class="top-bar">
+    <a href="index.html" class="back">← 返回小窝</a>
+    <span class="title">🏗️ 装修进度</span>
+    <span></span>
+</div>
+
+<div class="container">
+
+    <!-- ====== 概览卡 ====== -->
+    <div class="overview">
+        <div class="overview-header">
+            <h1><span class="emoji">🏠</span> 新家装修</h1>
+            <div class="overview-stats">
+                <span class="stat-pill green" id="statDone">✓ 已完成 0</span>
+                <span class="stat-pill yellow" id="statActive">● 进行中 0</span>
+                <span class="stat-pill red" id="statPending">○ 未开始 6</span>
+            </div>
+        </div>
+        <div class="progress-wrap">
+            <div class="progress-label">
+                <span>整体进度</span>
+                <span class="pct" id="totalPct">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="totalFill"></div>
+            </div>
+            <div class="progress-hint" id="progressHint">点击下方阶段勾选完成状态</div>
+        </div>
+    </div>
+
+    <!-- ====== 预算统计 ====== -->
+    <div class="budget-bar">
+        <div class="budget-card">
+            <div class="label">📋 预算总额</div>
+            <div class="amount blue" id="budgetTotal">¥0</div>
+            <div class="sub">
+                <input type="number" id="budgetInput" placeholder="输入总预算"
+                    style="width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.1);
+                    color:var(--c-blue);font-size:.85rem;padding:4px 0;outline:none;font-family:var(--font)">
+            </div>
+        </div>
+        <div class="budget-card">
+            <div class="label">💰 已支出</div>
+            <div class="amount primary" id="spentTotal">¥0</div>
+            <div class="sub" id="budgetRemain">剩余 -- </div>
+        </div>
+    </div>
+
+    <!-- ====== 阶段列表 ====== -->
+    <div class="phases-header">
+        <h2>📋 装修阶段</h2>
+        <button class="btn-reset" id="btnReset" title="重置所有进度">重置</button>
+    </div>
+
+    <div id="phasesList"></div>
+
+</div>
+
+<!-- 底部 -->
+<div class="footer">
+    <a href="index.html">宋华家的小窝</a> · 用爱搭建每一个角落 ❤️
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+ *  装修进度管理 — 数据模型 & 交互逻辑
+ *  所有数据持久化到 localStorage
+ * ============================================================ */
+
+// ====== 默认阶段数据 ======
+const DEFAULT_PHASES = [
+    {
+        id: 'demolition', name: '拆改阶段', icon: '🔨',
+        desc: '墙体拆除、结构改造、垃圾清运',
+        tasks: ['墙体拆除','结构加固','门窗拆改','垃圾清运'],
+    },
+    {
+        id: 'plumbing', name: '水电阶段', icon: '🔌',
+        desc: '水管铺设、电路改造、开关插座定位',
+        tasks: ['水路改造','电路改造','强弱电分离','开关插座定位'],
+    },
+    {
+        id: 'masonry', name: '泥木阶段', icon: '🧱',
+        desc: '瓷砖铺贴、吊顶施工、柜体安装',
+        tasks: ['防水工程','瓷砖铺贴','吊顶施工','柜体安装'],
+    },
+    {
+        id: 'paint', name: '油漆阶段', icon: '🎨',
+        desc: '墙面找平、乳胶漆涂刷、壁纸施工',
+        tasks: ['墙面找平','腻子打磨','乳胶漆涂刷','壁纸铺贴'],
+    },
+    {
+        id: 'install', name: '安装阶段', icon: '🔧',
+        desc: '灯具、洁具、电器、五金安装',
+        tasks: ['灯具安装','洁具安装','电器安装','五金件安装'],
+    },
+    {
+        id: 'complete', name: '竣工验收', icon: '✅',
+        desc: '全面验收、保洁、通风、入住准备',
+        tasks: ['全面验收','深度保洁','通风除醛','入住准备'],
+    },
+];
+
+// ====== 状态管理 ======
+const STORAGE_KEY = 'reno_progress_v1';
+
+function loadState() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return getDefaultState();
+}
+
+function getDefaultState() {
+    return {
+        phases: DEFAULT_PHASES.map((p, i) => ({
+            ...p,
+            order: i,
+            done: false,
+            status: '未开始',       // 未开始 / 进行中 / 已完成 / 暂停
+            note: '',
+            dueDate: '',
+            doneDate: '',
+            budget: 0,
+            spent: 0,
+        })),
+        totalBudget: 0,
+    };
+}
+
+function saveState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+let state = loadState();
+
+// ====== 工具函数 ======
+function $(sel) { return document.querySelector(sel); }
+function $$(sel) { return document.querySelectorAll(sel); }
+
+function toast(msg) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function fmtMoney(n) {
+    if (!n && n !== 0) return '--';
+    return '¥' + Number(n).toLocaleString('zh-CN');
+}
+
+// ====== 渲染概览 ======
+function renderOverview() {
+    const total = state.phases.length;
+    const done = state.phases.filter(p => p.done).length;
+    const active = state.phases.filter(p => !p.done && p.status === '进行中').length;
+    const pending = total - done - active;
+    const pct = total > 0 ? Math.round(done / total * 100) : 0;
+
+    $('#statDone').textContent = `✓ 已完成 ${done}`;
+    $('#statActive').textContent = `● 进行中 ${active}`;
+    $('#statPending').textContent = `○ 未开始 ${pending}`;
+    $('#totalPct').textContent = pct + '%';
+    $('#totalFill').style.width = pct + '%';
+
+    if (done === total) {
+        $('#progressHint').textContent = '🎉 恭喜！装修全部完成！';
+    } else if (done > 0) {
+        const next = state.phases.find(p => !p.done);
+        $('#progressHint').textContent = next ? `下一阶段：${next.icon} ${next.name}` : '';
+    } else {
+        $('#progressHint').textContent = '点击下方阶段勾选完成状态';
+    }
+}
+
+// ====== 渲染预算 ======
+function renderBudget() {
+    $('#budgetTotal').textContent = fmtMoney(state.totalBudget);
+    const totalSpent = state.phases.reduce((s, p) => s + (Number(p.spent) || 0), 0);
+    $('#spentTotal').textContent = fmtMoney(totalSpent);
+    if (state.totalBudget > 0) {
+        const remain = state.totalBudget - totalSpent;
+        const pct = Math.round(totalSpent / state.totalBudget * 100);
+        $('#budgetRemain').textContent = `剩余 ${fmtMoney(remain)}（已用 ${pct}%）`;
+        $('#budgetRemain').style.color = remain < 0 ? 'var(--c-red)' : 'var(--c-text-dim)';
+    } else {
+        $('#budgetRemain').textContent = '在左侧输入总预算';
+    }
+}
+
+// ====== 渲染阶段列表 ======
+function renderPhases() {
+    const list = $('#phasesList');
+    list.innerHTML = '';
+
+    state.phases.forEach((phase, idx) => {
+        const card = document.createElement('div');
+        const statusClass = phase.done ? 'done' : (phase.status === '进行中' ? 'active' : 'pending');
+        card.className = `phase-card ${statusClass}`;
+
+        // 日期显示
+        let dateHtml = '';
+        if (phase.done && phase.doneDate) {
+            dateHtml = `<div class="done-date">完成于 ${phase.doneDate}</div>`;
+        } else if (phase.dueDate) {
+            const isOverdue = new Date(phase.dueDate) < new Date() && !phase.done;
+            dateHtml = `<div class="due" style="${isOverdue ? 'color:var(--c-red)' : ''}">${isOverdue ? '⚠️ 已逾期' : '预计'} ${phase.dueDate}</div>`;
+        }
+
+        card.innerHTML = `
+            <div class="phase-header" data-idx="${idx}">
+                <div class="phase-check ${phase.done ? 'checked' : 'unchecked'}" data-idx="${idx}">
+                    ${phase.done ? '✓' : ''}
+                </div>
+                <div class="phase-info">
+                    <div class="phase-name">
+                        ${phase.icon} ${phase.name}
+                        <span class="idx">${idx + 1}/${state.phases.length}</span>
+                    </div>
+                    <div class="phase-status-text">${phase.desc}</div>
+                </div>
+                <div class="phase-date">${dateHtml}</div>
+                <button class="phase-expand" data-idx="${idx}">▼</button>
+            </div>
+            <div class="phase-body" id="body-${idx}">
+                <!-- 状态选择 -->
+                <div class="status-select" data-idx="${idx}">
+                    ${['未开始','进行中','已完成','暂停'].map(s =>
+                        `<button class="status-btn ${phase.status === s ? 'active-status' : ''}" data-status="${s}" data-idx="${idx}">${s}</button>`
+                    ).join('')}
+                </div>
+
+                <!-- 详情表单 -->
+                <div class="detail-grid">
+                    <div class="detail-field">
+                        <label>预计完成日期</label>
+                        <input type="date" data-field="dueDate" data-idx="${idx}" value="${phase.dueDate || ''}">
+                    </div>
+                    <div class="detail-field">
+                        <label>实际完成日期</label>
+                        <input type="date" data-field="doneDate" data-idx="${idx}" value="${phase.doneDate || ''}">
+                    </div>
+                    <div class="detail-field">
+                        <label>阶段预算（元）</label>
+                        <input type="number" data-field="budget" data-idx="${idx}" value="${phase.budget || ''}" placeholder="0">
+                    </div>
+                    <div class="detail-field">
+                        <label>实际支出（元）</label>
+                        <input type="number" data-field="spent" data-idx="${idx}" value="${phase.spent || ''}" placeholder="0">
+                    </div>
+                    <div class="detail-field full">
+                        <label>备注</label>
+                        <textarea data-field="note" data-idx="${idx}" placeholder="记录施工细节、注意事项...">${phase.note || ''}</textarea>
+                    </div>
+                </div>
+
+                <!-- 子任务清单 -->
+                <div style="margin-top:14px">
+                    <label style="font-size:.78rem;color:var(--c-text-dim);display:block;margin-bottom:6px">子任务</label>
+                    <div class="subtasks" data-idx="${idx}">
+                        ${(phase.tasks || []).map((task, ti) => {
+                            const checked = (phase.taskDone || [])[ti] || false;
+                            return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                                <input type="checkbox" data-task-idx="${ti}" data-phase-idx="${idx}" ${checked ? 'checked' : ''}
+                                    style="accent-color:var(--c-primary);width:16px;height:16px;cursor:pointer">
+                                <span style="font-size:.88rem;${checked ? 'text-decoration:line-through;color:var(--c-text-dim)' : ''}">${task}</span>
+                            </div>`;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <!-- 照片上传占位 -->
+                <div class="photo-upload-area" onclick="toast('📷 照片上传功能开发中...')">
+                    <span class="icon">📷</span>
+                    点击上传现场照片（即将上线）
+                </div>
+            </div>
+        `;
+
+        list.appendChild(card);
+    });
+}
+
+// ====== 事件绑定 ======
+function bindEvents() {
+    const list = $('#phasesList');
+
+    // 事件委托
+    list.addEventListener('click', (e) => {
+        const target = e.target;
+
+        // 勾选完成
+        if (target.classList.contains('phase-check')) {
+            const idx = Number(target.dataset.idx);
+            state.phases[idx].done = !state.phases[idx].done;
+            if (state.phases[idx].done) {
+                state.phases[idx].status = '已完成';
+                if (!state.phases[idx].doneDate) {
+                    state.phases[idx].doneDate = new Date().toISOString().slice(0, 10);
+                }
+            } else {
+                state.phases[idx].status = '进行中';
+                state.phases[idx].doneDate = '';
+            }
+            saveState(state);
+            renderAll();
+            toast(state.phases[idx].done ? '✅ 已完成！' : '↩️ 已撤销');
+            return;
+        }
+
+        // 展开/折叠
+        if (target.classList.contains('phase-expand') || target.closest('.phase-header') === target.closest('.phase-card')?.querySelector('.phase-header') && !target.classList.contains('phase-check')) {
+            const btn = target.closest('.phase-card').querySelector('.phase-expand');
+            const idx = Number(btn.dataset.idx);
+            const body = document.getElementById(`body-${idx}`);
+            const isOpen = body.classList.contains('open');
+            body.classList.toggle('open');
+            btn.classList.toggle('open');
+            return;
+        }
+
+        // 状态按钮
+        if (target.classList.contains('status-btn')) {
+            const idx = Number(target.dataset.idx);
+            const status = target.dataset.status;
+            state.phases[idx].status = status;
+            if (status === '已完成') {
+                state.phases[idx].done = true;
+                if (!state.phases[idx].doneDate) {
+                    state.phases[idx].doneDate = new Date().toISOString().slice(0, 10);
+                }
+            } else {
+                state.phases[idx].done = false;
+                if (status !== '已完成') state.phases[idx].doneDate = '';
+            }
+            saveState(state);
+            renderAll();
+            return;
+        }
+    });
+
+    // 输入框变更
+    list.addEventListener('change', (e) => {
+        const target = e.target;
+        const idx = Number(target.dataset.idx);
+
+        // 详情字段
+        if (target.dataset.field) {
+            const field = target.dataset.field;
+            if (field === 'budget' || field === 'spent') {
+                state.phases[idx][field] = Number(target.value) || 0;
+            } else {
+                state.phases[idx][field] = target.value;
+            }
+            saveState(state);
+            renderOverview();
+            renderBudget();
+            return;
+        }
+
+        // 子任务勾选
+        if (target.dataset.taskIdx !== undefined) {
+            const ti = Number(target.dataset.taskIdx);
+            const pi = Number(target.dataset.phaseIdx);
+            if (!state.phases[pi].taskDone) state.phases[pi].taskDone = [];
+            state.phases[pi].taskDone[ti] = target.checked;
+            saveState(state);
+            renderPhases();
+            return;
+        }
+    });
+
+    // 输入框实时保存（textarea）
+    list.addEventListener('input', (e) => {
+        const target = e.target;
+        if (target.tagName === 'TEXTAREA' && target.dataset.field) {
+            const idx = Number(target.dataset.idx);
+            state.phases[idx][target.dataset.field] = target.value;
+            saveState(state);
+        }
+    });
+
+    // 总预算输入
+    $('#budgetInput').addEventListener('change', (e) => {
+        state.totalBudget = Number(e.target.value) || 0;
+        saveState(state);
+        renderBudget();
+    });
+
+    // 重置按钮
+    $('#btnReset').addEventListener('click', () => {
+        if (confirm('确定要重置所有装修进度吗？此操作不可恢复。')) {
+            localStorage.removeItem(STORAGE_KEY);
+            state = getDefaultState();
+            saveState(state);
+            renderAll();
+            toast('🔄 已重置');
+        }
+    });
+}
+
+// ====== 全局渲染 ======
+function renderAll() {
+    renderOverview();
+    renderBudget();
+    renderPhases();
+}
+
+// ====== 初始化 ======
+document.addEventListener('DOMContentLoaded', () => {
+    // 恢复总预算输入框
+    if (state.totalBudget > 0) {
+        $('#budgetInput').value = state.totalBudget;
+    }
+    renderAll();
+    bindEvents();
+});
+</script>
+</body>
+</html>
