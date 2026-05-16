@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家庭中心 · 宋华家的小窝</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ====== 家庭中心专用样式 ====== */
+        .hub-hero {
+            padding-top: 100px;
+            text-align: center;
+            background: linear-gradient(180deg, #111 0%, var(--color-bg) 100%);
+            padding-bottom: 40px;
+        }
+        .hub-hero h1 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .hub-hero p {
+            color: var(--color-text-light);
+        }
+
+        /* 标签导航 */
+        .hub-tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0 20px;
+            margin-bottom: 32px;
+            position: sticky;
+            top: 60px;
+            z-index: 100;
+            background: var(--color-bg);
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .hub-tab {
+            padding: 10px 20px;
+            border-radius: 24px;
+            background: var(--color-card);
+            color: var(--color-text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .hub-tab:hover, .hub-tab.active {
+            background: rgba(232,168,124,0.12);
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+            text-decoration: none;
+        }
+        .hub-tab .tab-icon {
+            margin-right: 6px;
+        }
+
+        /* 内容区域 */
+        .hub-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        .hub-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .hub-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hub-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .hub-section-header h2 {
+            font-size: 1.4rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hub-section-header h2 .icon {
+            font-size: 1.6rem;
+        }
+
+        /* ====== 购物清单 ====== */
+        .shopping-input-area {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .shopping-input-area input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--color-card);
+            border: 2px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-family: var(--font);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .shopping-input-area input:focus {
+            border-color: var(--color-primary);
+        }
+        .shopping-input-area select {
+            padding: 12px 16px;
+            background: var(--color-card);
+            border: 2px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-family: var(--font);
+            font-size: 0.95rem;
+            outline: none;
+            min-width: 120px;
+        }
+        .shopping-input-area select option {
+            background: #222;
+        }
+        .shopping-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .shopping-category {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .category-header h3 {
+            font-size: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .category-count {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            background: rgba(255,255,255,0.06);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .shopping-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .shopping-item:last-child {
+            border-bottom: none;
+        }
+        .shopping-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--color-primary);
+            cursor: pointer;
+        }
+        .shopping-item .item-name {
+            flex: 1;
+            font-size: 0.95rem;
+            color: var(--color-text);
+        }
+        .shopping-item.done .item-name {
+            text-decoration: line-through;
+            color: var(--color-text-light);
+        }
+        .shopping-item .item-delete {
+            background: none;
+            border: none;
+            color: var(--color-text-light);
+            cursor: pointer;
+            font-size: 1.1rem;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+        .shopping-item:hover .item-delete {
+            opacity: 1;
+        }
+        .shopping-item .item-delete:hover {
+            color: var(--color-pink);
+        }
+        .shopping-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .btn-clear {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.06);
+            border: none;
+            border-radius: 20px;
+            color: var(--color-text-light);
+            font-family: var(--font);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .btn-clear:hover {
+            background: rgba(212,106,106,0.15);
+            color: var(--color-pink);
+        }
+
+        /* ====== 家庭食谱 ====== */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .recipe-card {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: transform var(--transition), border-color var(--transition);
+            cursor: pointer;
+        }
+        .recipe-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(232,168,124,0.15);
+        }
+        .recipe-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+        .recipe-card h3 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .recipe-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            margin-bottom: 12px;
+        }
+        .recipe-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .recipe-tag {
+            padding: 3px 10px;
+            background: rgba(232,168,124,0.1);
+            color: var(--color-primary);
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        .recipe-add-card {
+            background: rgba(232,168,124,0.05);
+            border: 2px dashed rgba(232,168,124,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            color: var(--color-primary);
+            cursor: pointer;
+        }
+        .recipe-add-card:hover {
+            background: rgba(232,168,124,0.1);
+            border-color: var(--color-primary);
+        }
+        .recipe-add-card .add-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        /* 食谱详情弹窗 */
+        .recipe-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .recipe-modal.show {
+            display: flex;
+        }
+        .recipe-modal-content {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.06);
+            animation: fadeInUp 0.3s ease;
+        }
+        .recipe-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--color-text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .recipe-modal-close:hover {
+            color: #fff;
+        }
+        .recipe-modal h2 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .recipe-detail-section {
+            margin-bottom: 24px;
+        }
+        .recipe-detail-section h3 {
+            font-size: 1rem;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .recipe-ingredients {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+        }
+        .recipe-ingredient {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .recipe-steps {
+            list-style: none;
+        }
+        .recipe-step {
+            display: flex;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .recipe-step:last-child {
+            border-bottom: none;
+        }
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: var(--color-primary);
+            color: #111;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .step-text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ====== 宠物档案 ====== */
+        .pets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .pet-card {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .pet-header {
+            background: linear-gradient(135deg, rgba(232,168,124,0.1), rgba(232,168,124,0.05));
+            padding: 24px;
+            text-align: center;
+        }
+        .pet-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(232,168,124,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 12px;
+            border: 3px solid rgba(232,168,124,0.3);
+        }
+        .pet-header h3 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .pet-header .pet-breed {
+            font-size: 0.9rem;
+            color: var(--color-primary);
+        }
+        .pet-body {
+            padding: 20px;
+        }
+        .pet-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .pet-info-item {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255,255,255,0.04);
+            border-radius: var(--radius-sm);
+        }
+        .pet-info-item .label {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            margin-bottom: 4px;
+        }
+        .pet-info-item .value {
+            font-size: 1rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        .pet-records {
+            margin-top: 16px;
+        }
+        .pet-records h4 {
+            font-size: 0.95rem;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pet-record {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .pet-record:last-child {
+            border-bottom: none;
+        }
+        .pet-record .record-type {
+            font-size: 0.9rem;
+            color: var(--color-text);
+        }
+        .pet-record .record-date {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+        }
+        .pet-record .record-status {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .record-status.done {
+            background: rgba(106,176,122,0.15);
+            color: var(--color-success);
+        }
+        .record-status.due {
+            background: rgba(212,176,90,0.15);
+            color: var(--color-warning);
+        }
+
+        /* ====== 家庭日历 ====== */
+        .calendar-container {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .calendar-header h3 {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+        .calendar-nav button {
+            background: rgba(255,255,255,0.06);
+            border: none;
+            color: var(--color-text);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background var(--transition);
+        }
+        .calendar-nav button:hover {
+            background: rgba(232,168,124,0.15);
+        }
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .calendar-weekday {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            padding: 8px;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.02);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            font-size: 0.95rem;
+        }
+        .calendar-day:hover {
+            background: rgba(232,168,124,0.1);
+        }
+        .calendar-day.today {
+            background: rgba(232,168,124,0.15);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+        .calendar-day.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            width: 6px;
+            height: 6px;
+            background: var(--color-primary);
+            border-radius: 50%;
+        }
+        .calendar-day.other-month {
+            color: var(--color-text-light);
+            opacity: 0.5;
+        }
+        .upcoming-events {
+            margin-top: 32px;
+        }
+        .upcoming-events h3 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .event-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255,255,255,0.04);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--color-primary);
+        }
+        .event-date-box {
+            text-align: center;
+            min-width: 50px;
+        }
+        .event-date-box .month {
+            font-size: 0.8rem;
+            color: var(--color-primary);
+        }
+        .event-date-box .day {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .event-info h4 {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .event-info p {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+        }
+        .event-type {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+        .event-type.birthday {
+            background: rgba(212,176,90,0.15);
+            color: var(--color-warning);
+        }
+        .event-type.anniversary {
+            background: rgba(196,128,128,0.15);
+            color: var(--color-pink);
+        }
+        .event-type.other {
+            background: rgba(90,160,196,0.15);
+            color: var(--color-blue);
+        }
+
+        /* ====== 留言板 ====== */
+        .message-input-area {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .message-input-area textarea {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--color-card);
+            border: 2px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-family: var(--font);
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 80px;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .message-input-area textarea:focus {
+            border-color: var(--color-primary);
+        }
+        .message-wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        .message-card {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: transform var(--transition);
+        }
+        .message-card:hover {
+            transform: translateY(-2px);
+        }
+        .message-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(232,168,124,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .message-author {
+            font-size: 0.95rem;
+            color: #fff;
+            font-weight: 500;
+        }
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+        }
+        .message-text {
+            font-size: 0.95rem;
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+        .message-delete {
+            background: none;
+            border: none;
+            color: var(--color-text-light);
+            cursor: pointer;
+            float: right;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+        .message-card:hover .message-delete {
+            opacity: 1;
+        }
+        .message-delete:hover {
+            color: var(--color-pink);
+        }
+
+        /* ====== 添加食谱弹窗表单 ====== */
+        .recipe-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .form-group label {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-family: var(--font);
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--color-primary);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .ingredients-list, .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .ingredient-row, .step-row {
+            display: flex;
+            gap: 8px;
+        }
+        .ingredient-row input, .step-row textarea {
+            flex: 1;
+        }
+        .btn-remove {
+            background: rgba(212,106,106,0.15);
+            border: none;
+            color: var(--color-pink);
+            width: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .btn-add-row {
+            background: rgba(232,168,124,0.1);
+            border: 1px dashed rgba(232,168,124,0.3);
+            color: var(--color-primary);
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.9rem;
+            transition: all var(--transition);
+        }
+        .btn-add-row:hover {
+            background: rgba(232,168,124,0.2);
+        }
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+        .btn-cancel {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.06);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-family: var(--font);
+            cursor: pointer;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hub-tabs {
+                top: 56px;
+                padding: 12px 16px;
+                gap: 6px;
+            }
+            .hub-tab {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+            .shopping-categories, .recipe-grid, .pets-grid {
+                grid-template-columns: 1fr;
+            }
+            .pet-info-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand"><a href="index.html" style="color: inherit; text-decoration: none;"><span class="nav-icon">🏡</span><span class="nav-title">宋华家的小窝</span></a></div>
+        <div class="nav-links">
+            <a href="index.html">返回首页</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hub-hero">
+        <h1>🏠 家庭中心</h1>
+        <p>一站式管理我们的家庭生活</p>
+    </section>
+
+    <!-- 标签导航 -->
+    <div class="hub-tabs">
+        <a class="hub-tab active" data-tab="shopping"><span class="tab-icon">🛒</span>购物清单</a>
+        <a class="hub-tab" data-tab="recipes"><span class="tab-icon">🍳</span>家庭食谱</a>
+        <a class="hub-tab" data-tab="pets"><span class="tab-icon">🐱</span>宠物档案</a>
+        <a class="hub-tab" data-tab="calendar"><span class="tab-icon">📅</span>家庭日历</a>
+        <a class="hub-tab" data-tab="messages"><span class="tab-icon">💌</span>留言板</a>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="hub-content">
+
+        <!-- ====== 购物清单 ====== -->
+        <div class="hub-section active" id="shopping">
+            <div class="hub-section-header">
+                <h2><span class="icon">🛒</span> 购物清单</h2>
+            </div>
+            <div class="shopping-input-area">
+                <input type="text" id="shoppingInput" placeholder="添加购物项目...">
+                <select id="shoppingCategory">
+                    <option value="食材">🥬 食材</option>
+                    <option value="日用品">🧴 日用品</option>
+                    <option value="猫用品">🐱 猫用品</option>
+                    <option value="其他">📦 其他</option>
+                </select>
+                <button class="btn-primary" id="addShopping">添加</button>
+            </div>
+            <div class="shopping-categories" id="shoppingCategories"></div>
+        </div>
+
+        <!-- ====== 家庭食谱 ====== -->
+        <div class="hub-section" id="recipes">
+            <div class="hub-section-header">
+                <h2><span class="icon">🍳</span> 家庭食谱</h2>
+            </div>
+            <div class="recipe-grid" id="recipeGrid"></div>
+        </div>
+
+        <!-- ====== 宠物档案 ====== -->
+        <div class="hub-section" id="pets">
+            <div class="hub-section-header">
+                <h2><span class="icon">🐱</span> 宠物档案</h2>
+            </div>
+            <div class="pets-grid" id="petsGrid"></div>
+        </div>
+
+        <!-- ====== 家庭日历 ====== -->
+        <div class="hub-section" id="calendar">
+            <div class="hub-section-header">
+                <h2><span class="icon">📅</span> 家庭日历</h2>
+            </div>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button id="prevMonth">◀</button>
+                        <button id="todayBtn">今天</button>
+                        <button id="nextMonth">▶</button>
+                    </div>
+                    <h3 id="calendarTitle"></h3>
+                </div>
+                <div class="calendar-weekdays">
+                    <div class="calendar-weekday">日</div>
+                    <div class="calendar-weekday">一</div>
+                    <div class="calendar-weekday">二</div>
+                    <div class="calendar-weekday">三</div>
+                    <div class="calendar-weekday">四</div>
+                    <div class="calendar-weekday">五</div>
+                    <div class="calendar-weekday">六</div>
+                </div>
+                <div class="calendar-days" id="calendarDays"></div>
+            </div>
+            <div class="upcoming-events">
+                <h3>📌 即将到来的事件</h3>
+                <div class="event-list" id="eventList"></div>
+            </div>
+        </div>
+
+        <!-- ====== 留言板 ====== -->
+        <div class="hub-section" id="messages">
+            <div class="hub-section-header">
+                <h2><span class="icon">💌</span> 家庭留言板</h2>
+            </div>
+            <div class="message-input-area">
+                <textarea id="messageInput" placeholder="写点想对家人说的话..."></textarea>
+                <button class="btn-primary" id="postMessage">发送</button>
+            </div>
+            <div class="message-wall" id="messageWall"></div>
+        </div>
+    </div>
+
+    <!-- 食谱详情弹窗 -->
+    <div class="recipe-modal" id="recipeModal">
+        <div class="recipe-modal-content" id="recipeModalContent"></div>
+    </div>
+
+    <!-- 添加食谱弹窗 -->
+    <div class="recipe-modal" id="addRecipeModal">
+        <div class="recipe-modal-content">
+            <button class="recipe-modal-close" id="closeAddRecipe">&times;</button>
+            <h2>📝 添加新食谱</h2>
+            <form class="recipe-form" id="recipeForm">
+                <div class="form-group">
+                    <label>菜品名称</label>
+                    <input type="text" id="recipeName" required placeholder="例如：红烧肉">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>烹饪时间</label>
+                        <input type="text" id="recipeTime" placeholder="例如：30分钟">
+                    </div>
+                    <div class="form-group">
+                        <label>难度</label>
+                        <select id="recipeDifficulty">
+                            <option value="简单">简单</option>
+                            <option value="中等">中等</option>
+                            <option value="困难">困难</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>分类标签（逗号分隔）</label>
+                    <input type="text" id="recipeTags" placeholder="例如：家常菜, 快手菜, 下饭菜">
+                </div>
+                <div class="form-group">
+                    <label>食材清单</label>
+                    <div class="ingredients-list" id="ingredientsList">
+                        <div class="ingredient-row">
+                            <input type="text" placeholder="食材名称">
+                            <input type="text" placeholder="用量" style="max-width: 120px;">
+                            <button type="button" class="btn-remove" onclick="this.parentElement.remove()">×</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add-row" onclick="addIngredientRow()">+ 添加食材</button>
+                </div>
+                <div class="form-group">
+                    <label>烹饪步骤</label>
+                    <div class="steps-list" id="stepsList">
+                        <div class="step-row">
+                            <textarea placeholder="步骤说明" rows="2"></textarea>
+                            <button type="button" class="btn-remove" onclick="this.parentElement.remove()">×</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add-row" onclick="addStepRow()">+ 添加步骤</button>
+                </div>
+                <div class="form-group">
+                    <label>小贴士（可选）</label>
+                    <textarea id="recipeTips" placeholder="烹饪小技巧..." rows="2"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeAddRecipeModal()">取消</button>
+                    <button type="submit" class="btn-primary">保存食谱</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/hub.js"></script>
+</body>
+</html>

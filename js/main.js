@@ -55,8 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initDate();
     initScrollReveal();
     initAlbum();
-    initMessages();
-    initMemos();
     initMap();
 });
 
@@ -118,76 +116,6 @@ function initAlbum() {
     $('#lightboxClose').addEventListener('click', () => lightbox.classList.remove('show'));
     lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('show'); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lightbox.classList.remove('show'); });
-}
-
-// ====== 留言板 ======
-function initMessages() {
-    const input = $('#messageInput'), wall = $('#messageWall');
-    const msgs = loadData('family_msgs', [
-        { author: "🐱 鱼蛋", text: "喵~今天也是幸福的一天！", rot: -3 },
-        { author: "🐱 芋圆", text: "新家的地毯好舒服~", rot: 2 },
-        { author: "👩 妈妈", text: "回家路上买点菜，晚上给你们做汤~", rot: -1 },
-        { author: "👨 爸爸", text: "新家的WiFi信号满格，速度飞快！", rot: 3 },
-    ]);
-    function renderMsgs() {
-        wall.innerHTML = '';
-        msgs.forEach(m => {
-            const note = document.createElement('div');
-            note.className = 'message-note';
-            note.style.setProperty('--rotation', (m.rot || (Math.random()*6-3)) + 'deg');
-            note.innerHTML = `<span class="note-author">${m.author}</span><p class="note-text">${m.text}</p>`;
-            wall.appendChild(note);
-        });
-    }
-    renderMsgs();
-    $('#postMessage').addEventListener('click', () => {
-        const text = input.value.trim();
-        if (!text) return showToast("写点什么嘛~");
-        const authors = ["👨 爸爸", "👩 妈妈", "🐱 鱼蛋", "🐱 芋圆"];
-        msgs.push({ author: authors[Math.floor(Math.random()*authors.length)], text, rot: Math.random()*6-3 });
-        if (msgs.length > 20) msgs.shift();
-        saveData('family_msgs', msgs);
-        input.value = ''; renderMsgs();
-        showToast("留言成功 💕");
-    });
-}
-
-// ====== 备忘录 ======
-function initMemos() {
-    const list = $('#memoList');
-    const memos = loadData('family_memos', [
-        { text: "🐱 给鱼蛋和芋圆买猫罐头", done: false },
-        { text: "🏡 新家WiFi密码同步给父母", done: true },
-        { text: "📦 搬家剩下的纸箱处理", done: false },
-        { text: "💡 买个感应小夜灯放卧室", done: false },
-        { text: "🧹 新阳台花盆买土", done: false },
-    ]);
-    function renderMemos() {
-        list.innerHTML = '';
-        memos.forEach((m, i) => {
-            const item = document.createElement('div');
-            item.className = 'memo-item' + (m.done ? ' completed' : '');
-            item.innerHTML = `<input type="checkbox" id="m${i}" ${m.done ? 'checked' : ''}><label for="m${i}">${m.text}</label>`;
-            list.appendChild(item);
-            item.querySelector('input').addEventListener('change', () => {
-                memos[i].done = !memos[i].done;
-                saveData('family_memos', memos); renderMemos();
-            });
-            item.querySelector('label').addEventListener('contextmenu', (e) => {
-                e.preventDefault(); if (confirm(`删除: ${m.text}?`)) { memos.splice(i,1); saveData('family_memos',memos); renderMemos(); }
-            });
-        });
-    }
-    renderMemos();
-    $('#addMemo').addEventListener('click', () => {
-        const text = $('#memoInput').value.trim();
-        if (!text) return showToast("写点什么备忘~");
-        memos.push({ text, done: false });
-        saveData('family_memos', memos);
-        $('#memoInput').value = ''; renderMemos();
-        showToast("备忘已添加 ✅");
-    });
-    $('#memoInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#addMemo').click(); });
 }
 
 // ====== 中国地图 ======

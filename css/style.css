@@ -361,6 +361,51 @@ a:hover { text-decoration: underline; }
 /* ====== 工具函数/按钮等 ====== */
 .city-tags h3, .city-list h3 { text-align: center; margin: 20px 0 8px; font-size: 1rem; color: var(--color-text-light); }
 
+/* ====== 家庭中心入口卡片 ====== */
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.hub-card {
+    background: var(--color-card);
+    border-radius: var(--radius);
+    padding: 24px 16px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.hub-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(232,168,124,0.2);
+    box-shadow: var(--shadow-lg);
+    text-decoration: none;
+}
+.hub-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+.hub-card h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 6px;
+}
+.hub-card p {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+}
+
+@media (max-width: 480px) {
+    .hub-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 /* Toast 提示 */
 .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);

@@ -11,9 +11,13 @@
         <div class="nav-brand"><span class="nav-icon">🏡</span><span class="nav-title">宋华家的小窝</span></div>
         <button class="nav-toggle" id="navToggle" aria-label="菜单">☰</button>
         <div class="nav-links" id="navLinks">
-            <a href="#home">首页</a><a href="#family">家人</a><a href="#album">相册</a>
-            <a href="#timeline">大事记</a><a href="#shortcuts">快捷</a><a href="#messages">留言</a>
-            <a href="#memos">备忘</a><a href="#map">足迹</a><a href="renovation.html">🏗️装修</a>
+            <a href="#home">首页</a>
+            <a href="#family">家人</a>
+            <a href="#album">相册</a>
+            <a href="#timeline">大事记</a>
+            <a href="hub.html">🏠 家庭中心</a>
+            <a href="#map">足迹</a>
+            <a href="renovation.html">🏗️ 装修</a>
         </div>
     </nav>
 
@@ -114,48 +118,41 @@
         </div>
     </section>
 
-    <!-- ====== 快捷入口 ====== -->
-    <section id="shortcuts" class="section shortcuts-section">
-        <h2 class="section-heading"><span class="heading-icon">⚡</span> 常用信息</h2>
-        <div class="shortcuts-grid">
-            <div class="shortcut-card"><h3>📍 新家地址</h3><p class="shortcut-text">上海市</p><p class="shortcut-detail"></p><p class="shortcut-detail">从松江搬到这里，开始了新的生活！</p></div>
-            <div class="shortcut-card"><h3>📶 WiFi信息</h3><p class="shortcut-text">请询问家人</p><p class="shortcut-detail">密码由家庭成员管理</p></div>
-            <div class="shortcut-card"><h3>🚨 紧急电话</h3><p class="shortcut-text">紧急: 110 | 火警: 119</p><p class="shortcut-detail">医疗: 120 | 交通事故: 122</p></div>
-            <div class="shortcut-card"><h3>👨‍👩 家庭电话</h3><p class="shortcut-text">请查看手机通讯录</p><p class="shortcut-detail">家人联系方式</p></div>
-            <div class="shortcut-card"><h3>🔧 物业维修</h3><p class="shortcut-text">请查看手机</p><p class="shortcut-detail">物业联系方式</p></div>
-            <div class="shortcut-card"><h3>🛒 常用链接</h3><p class="shortcut-text"><a href="https://jd.com" target="_blank">京东</a> | <a href="https://ele.me" target="_blank">饿了么</a></p><p class="shortcut-detail">外卖/购物</p></div>
-            <div class="shortcut-card" onclick="location.href='renovation.html'" style="cursor:pointer"><h3>🏗️ 装修进度</h3><p class="shortcut-text">新家装修管理</p><p class="shortcut-detail">进度跟踪 · 预算管理 · 阶段记录</p></div>
-        </div>
-    </section>
-
-    <!-- ====== 留言板 ====== -->
-    <section id="messages" class="section message-section">
-        <h2 class="section-heading"><span class="heading-icon">💌</span> 家庭留言板</h2>
-        <p class="section-desc">给家人写一句话吧~</p>
-        <div class="message-input-area">
-            <textarea id="messageInput" placeholder="写点想对家人说的话..." maxlength="200"></textarea>
-            <button id="postMessage" class="btn-primary">留下暖心一言</button>
-        </div>
-        <div class="message-wall" id="messageWall">
-            <div class="message-note"><span class="note-author">🐱 鱼蛋</span><p class="note-text">喵~今天也是幸福的一天！</p></div>
-            <div class="message-note"><span class="note-author">🐱 芋圆</span><p class="note-text">新家的地毯好舒服~</p></div>
-            <div class="message-note"><span class="note-author">❤️ 妈妈</span><p class="note-text">回家路上买点菜，晚上给你们做汤~</p></div>
-            <div class="message-note"><span class="note-author">🔧 爸爸</span><p class="note-text">新家的WiFi信号满格，速度飞快！</p></div>
-        </div>
-    </section>
-
-    <!-- ====== 备忘录 ====== -->
-    <section id="memos" class="section memo-section">
-        <h2 class="section-heading"><span class="heading-icon">📝</span> 家庭备忘录</h2>
-        <div class="memo-input-area">
-            <input type="text" id="memoInput" placeholder="添加待办事项..." maxlength="100">
-            <button id="addMemo" class="btn-primary">添加</button>
-        </div>
-        <div class="memo-list" id="memoList">
-            <div class="memo-item"><input type="checkbox" id="m1"><label for="m1">🐱 给鱼蛋和芋圆买猫罐头</label></div>
-            <div class="memo-item completed"><input type="checkbox" id="m2" checked><label for="m2">🏡 新家WiFi密码同步给父母</label></div>
-            <div class="memo-item"><input type="checkbox" id="m3"><label for="m3">📦 搬家剩下的纸箱处理</label></div>
-            <div class="memo-item"><input type="checkbox" id="m4"><label for="m4">💡 买个感应小夜灯放卧室</label></div>
+    <!-- ====== 家庭中心入口 ====== -->
+    <section id="hub-entry" class="section hub-entry-section">
+        <h2 class="section-heading"><span class="heading-icon">🏠</span> 家庭中心</h2>
+        <p class="section-desc">一站式管理家庭生活</p>
+        <div class="hub-grid">
+            <a href="hub.html#shopping" class="hub-card">
+                <div class="hub-icon">🛒</div>
+                <h3>购物清单</h3>
+                <p>食材 · 日用品 · 猫粮</p>
+            </a>
+            <a href="hub.html#recipes" class="hub-card">
+                <div class="hub-icon">🍳</div>
+                <h3>家庭食谱</h3>
+                <p>收藏喜欢的菜谱</p>
+            </a>
+            <a href="hub.html#pets" class="hub-card">
+                <div class="hub-icon">🐱</div>
+                <h3>宠物档案</h3>
+                <p>鱼蛋 · 芋圆的健康记录</p>
+            </a>
+            <a href="hub.html#calendar" class="hub-card">
+                <div class="hub-icon">📅</div>
+                <h3>家庭日历</h3>
+                <p>纪念日 · 生日提醒</p>
+            </a>
+            <a href="hub.html#messages" class="hub-card">
+                <div class="hub-icon">💌</div>
+                <h3>留言板</h3>
+                <p>给家人写一句话</p>
+            </a>
+            <a href="renovation.html" class="hub-card">
+                <div class="hub-icon">🏗️</div>
+                <h3>装修进度</h3>
+                <p>进度跟踪 · 预算管理</p>
+            </a>
         </div>
     </section>
 
